@@ -65,6 +65,10 @@ public class AdjacencyMatrixGraph implements Graph {
 
     @Override
     public void addVertex(Object element) throws GraphException, ListException {
+        if (counter >= vertexList.length)
+            throw new GraphException("Adjecency Matrix Graph is Full");
+            //no valida vertices repetidos
+        vertexList[counter++]= new Vertex(element);
 
     }
 
