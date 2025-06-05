@@ -9,14 +9,20 @@ class AdjacencyMatrixGraphTest {
 
     @Test
     void test1() {
-        try{
-        AdjacencyMatrixGraph graph = new AdjacencyMatrixGraph(50);
-        for (int i = 0; i < 20; i++) {
-            graph.addVertex(util.Utility.random(50)+1);
+        try {
+            AdjacencyMatrixGraph graph = new AdjacencyMatrixGraph(50);
+            for (int i = 'a'; i <= 'e'; i++) {
+                graph.addVertex(i);
+            }
+            graph.addEdgeWeight('a', 'b', util.Utility.random(20)+2);
+            graph.addEdgeWeight('a', 'c', util.Utility.random(20)+2);
+            graph.addEdgeWeight('a', 'd', util.Utility.random(20)+2);
+            graph.addEdgeWeight('b', 'e', util.Utility.random(20)+2);
+            graph.addEdgeWeight('c', 'd', util.Utility.random(20)+2);
+            graph.addEdgeWeight('c', 'e', util.Utility.random(20)+2);
 
-        }
-        System.out.println(graph);
-    }catch (GraphException | ListException e){
+            System.out.println(graph);
+        } catch (GraphException | ListException e) {
             throw new RuntimeException(e);
 
         }

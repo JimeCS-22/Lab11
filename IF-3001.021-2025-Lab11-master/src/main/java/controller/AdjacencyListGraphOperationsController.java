@@ -1,5 +1,13 @@
 package controller;
 
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+
 public class AdjacencyListGraphOperationsController {
     @javafx.fxml.FXML
     private RadioButton avlRadioButton;
