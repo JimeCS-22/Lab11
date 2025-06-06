@@ -35,6 +35,7 @@ public class AdjacencyMatrixGraphOperationsController {
 
     @javafx.fxml.FXML
     public void randomizeOnAction(ActionEvent actionEvent) {
+
     }
 
     @javafx.fxml.FXML
@@ -48,4 +49,5 @@ public class AdjacencyMatrixGraphOperationsController {
     @javafx.fxml.FXML
     public void handleScrollZoom(Event event) {
     }
+
 }
