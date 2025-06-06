@@ -22,6 +22,13 @@ class AdjacencyMatrixGraphTest {
             graph.addEdgeWeight('c', 'e', util.Utility.random(20)+2);
 
             System.out.println(graph);
+
+            //Se eliminan los vertices
+            System.out.println("Vertex deleted : a ");
+            graph.removeVertex('a');
+            System.out.println(graph);
+
+
         } catch (GraphException | ListException e) {
             throw new RuntimeException(e);
 

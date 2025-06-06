@@ -46,27 +46,45 @@ public class HelloController {
     }
 
     @FXML
-    public void LinkedGraphOnAction(ActionEvent actionEvent) {
+    public void LinkedGraphOnAction(ActionEvent actionEvent) throws IOException {
+
+        load("/ucr/lab/SinglyLinkedListGraph.fxml");
+
     }
 
     @FXML
-    public void MatrixGraphOnAction(ActionEvent actionEvent) {
+    public void MatrixGraphOnAction(ActionEvent actionEvent) throws IOException {
+
+        load("/ucr/lab/AdjacencyMatrixGraph.fxml");
+
     }
 
     @FXML
-    public void LinkedOperationsOnAction(ActionEvent actionEvent) {
+    public void LinkedOperationsOnAction(ActionEvent actionEvent) throws IOException {
+
+        load("/ucr/lab/SinglyLinkedListGraphOperations.fxml");
+
     }
 
     @FXML
-    public void ListOperationsOnAction(ActionEvent actionEvent) {
+    public void ListOperationsOnAction(ActionEvent actionEvent) throws IOException {
+
+        load("/ucr/lab/AdjacencyListGraphOperations.fxml");
+
     }
 
     @FXML
-    public void MatrixOperationsOnAction(ActionEvent actionEvent) {
+    public void MatrixOperationsOnAction(ActionEvent actionEvent) throws IOException {
+
+        load("/ucr/lab/AdjacencyMatrixGraphOperations.fxml");
+
     }
 
     @FXML
-    public void ListGraphOnAction(ActionEvent actionEvent) {
+    public void ListGraphOnAction(ActionEvent actionEvent) throws IOException {
+
+        load("/ucr/lab/AdjacenceyListGraph.fxml");
+
     }
 }
 
