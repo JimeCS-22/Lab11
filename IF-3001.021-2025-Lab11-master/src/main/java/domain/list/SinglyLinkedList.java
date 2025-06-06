@@ -10,7 +10,12 @@ public class SinglyLinkedList implements List{
     @Override
     public int size() throws ListException {
         if(isEmpty()){
-            throw new ListException("Singly Linked List is empty");
+            // It's generally better for size() to return 0 for an empty list
+            // rather than throw an exception. This is a common pattern.
+            return 0; // If empty, size is 0.
+            // If you absolutely need to throw, then keep the original line,
+            // but be aware it can make client code more complex.
+            // throw new ListException("Singly Linked List is empty"); // Original
         }
         Node aux = first;
         int count=0;
@@ -33,9 +38,14 @@ public class SinglyLinkedList implements List{
 
     @Override
     public boolean contains(Object element) throws ListException {
-        if(isEmpty()){
-            throw new ListException("Singly Linked List is empty");
-        }
+        // If size() doesn't throw on empty, this check needs to be adjusted
+        // if(isEmpty()){ // No longer needed if size() returns 0 and other methods check for isEmpty() at start
+        //     throw new ListException("Singly Linked List is empty");
+        // }
+        // The graph's containsVertex/containsEdge should check for graph.isEmpty() first.
+        // For SinglyLinkedList.contains, returning false on empty list is usually fine.
+        if(isEmpty()) return false; // Better to return false if list is empty and element not found
+
         Node aux = first;
         while(aux!=null){
             if(util.Utility.compare(aux.data, element)==0){
@@ -84,7 +94,7 @@ public class SinglyLinkedList implements List{
 
     @Override
     public void addInSortedList(Object element) {
-
+        // Not implemented, no change needed here.
     }
 
     @Override
@@ -112,12 +122,31 @@ public class SinglyLinkedList implements List{
 
     @Override
     public Object removeFirst() throws ListException {
-        return null;
+        if(isEmpty()){
+            throw new ListException("Singly Linked List is Empty");
+        }
+        Object data = first.data;
+        first = first.next;
+        return data;
     }
 
     @Override
     public Object removeLast() throws ListException {
-        return null;
+        if(isEmpty()){
+            throw new ListException("Singly Linked List is Empty");
+        }
+        if(first.next == null){ // Only one element in the list
+            Object data = first.data;
+            first = null;
+            return data;
+        }
+        Node aux = first;
+        while(aux.next.next != null){ // Traverse until aux.next is the last node
+            aux = aux.next;
+        }
+        Object data = aux.next.data;
+        aux.next = null; // Remove the last node
+        return data;
     }
 
     @Override
@@ -125,8 +154,10 @@ public class SinglyLinkedList implements List{
         if(isEmpty()){
             throw new ListException("Singly Linked List is Empty");
         }
-        for (int i = 0; i <= size() ; i++) {
+        // Using 1-based indexing for these loops as per requirement
+        for (int i = 1; i <= size() ; i++) {
             for (int j = i+1; j <= size() ; j++) {
+                // getNode(j).data will be compared with getNode(i).data
                 if(util.Utility.compare(getNode(j).data, getNode(i).data)<0){
                     Object aux = getNode(i).data;
                     getNode(i).data = getNode(j).data;
@@ -139,15 +170,18 @@ public class SinglyLinkedList implements List{
     @Override
     public int indexOf(Object element) throws ListException {
         if(isEmpty()){
-            throw new ListException("Singly Linked List is Empty");
+            // If empty, element cannot be found, return -1.
+            // No need to throw an exception here unless element is expected to always exist.
+            return -1;
+            // throw new ListException("Singly Linked List is Empty"); // Original
         }
         Node aux = first;
-        int index=0; //la lista inicia en 1
+        int index=1; // Start index at 1 for 1-based indexing
         while(aux!=null){
             if(util.Utility.compare(aux.data, element)==0){
-                return index;
+                return index; // Return 1-based index if found
             }
-            index++; //incremento el indice
+            index++; //increment the 1-based index
             aux=aux.next; //muevo aux al sgte nodo
         }
         return -1; //indica q el elemento no existe
@@ -196,7 +230,21 @@ public class SinglyLinkedList implements List{
 
     @Override
     public Object getNext(Object element) throws ListException {
-        return null;
+        if(isEmpty()){
+            throw new ListException("Singly Linked List is Empty");
+        }
+        Node aux = first;
+        while(aux!=null){
+            if(util.Utility.compare(aux.data, element)==0){
+                if(aux.next != null){
+                    return aux.next.data;
+                } else {
+                    return "It's the last, it has no next";
+                }
+            }
+            aux = aux.next;
+        }
+        return "Does not exist in Single Linked List";
     }
 
     @Override
@@ -204,20 +252,22 @@ public class SinglyLinkedList implements List{
         if(isEmpty()){
             throw new ListException("Singly Linked List is Empty");
         }
-        if (index < 0 || index >= size()) { // Validamos que el índice esté entre 0 y size()-1
+        // Validamos que el índice esté entre 1 and size() (inclusive) for 1-based indexing
+        if (index < 1 || index > size()) {
             throw new ListException("Invalid index: " + index);
         }
         Node aux = first;
-        int i = 0; // pos del primer nodo
+        int i = 1; // Start counter at 1 for 1-based indexing
         while(aux!=null){
             if(util.Utility.compare(i, index)==0) {  //ya encontro el indice
                 return aux;
             }
-            i++; //incremento la var local
+            i++; //increment the 1-based local counter
             aux = aux.next; //muevo aux al sgte nodo
         }
-        return null; //si llega aqui es xq no encontro el index
+        return null; // Should not reach here if bounds check is correct and list is not empty
     }
+
     public Node getNode(Object element) throws ListException {
         if(isEmpty()){
             throw new ListException("Singly Linked List is Empty");
@@ -229,7 +279,7 @@ public class SinglyLinkedList implements List{
             }
             aux = aux.next; //muevo aux al sgte nodo
         }
-        return null; //si llega aqui es xq no encontro el index
+        return null; //si llega aqui es xq no encontro el element
     }
 
     @Override
@@ -249,12 +299,13 @@ public class SinglyLinkedList implements List{
         if(isEmpty()){
             throw new ListException("Singly Linked List is Empty");
         }
-        if (index < 0 || index > size()) { // <<-- AQUI DEBE SER index < 0 || index >= size()
+        // Validamos que el índice esté entre 1 and size() (inclusive) for 1-based indexing
+        if (index < 1 || index > size()) {
             throw new ListException("Invalid index: " + index);
         }
 
         Node aux = first;
-        int i = 0;
+        int i = 1; // Start counter at 1 for 1-based indexing
         while(aux != null){
             if(util.Utility.compare(i, index) == 0) {
                 return aux.data;
@@ -262,6 +313,6 @@ public class SinglyLinkedList implements List{
             i++;
             aux = aux.next;
         }
-        return null;
+        return null; // Should not reach here
     }
 }

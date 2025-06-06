@@ -8,7 +8,6 @@ import domain.stack.LinkedStack;
 import domain.stack.StackException;
 
 public class SinglyLinkedListGraph implements Graph {
-
     private SinglyLinkedList vertexList; //lista enlazada de vértices
 
     //para los recorridos dfs, bfs
