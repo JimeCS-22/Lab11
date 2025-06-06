@@ -17,10 +17,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AdjacencyListGraphController {
     @javafx.fxml.FXML
@@ -41,46 +38,58 @@ public class AdjacencyListGraphController {
     @FXML
     public void initialize() {
 
-        try {
             int maxVertices = 10;
             graph = new AdjacencyListGraph(maxVertices);
 
-            generateRandomValues();
+            generateRandomGraph(); // Nuevo método para generar el grafo completo aleatorio
 
-            if (graph.size() > 1) { // Solo si hay al menos 2 vértices para conectar
-                for (int i = 0; i < graph.size(); i++) {
-                    for (int j = i + 1; j < graph.size(); j++) { // j = i + 1 para evitar duplicados (A-B y B-A)
-                        graph.addEdge(graph.getVertexData(i), graph.getVertexData(j));
-                    }
-                }
-            }
-
-            // 4. Dibujar el grafo
             drawGraph();
 
-        }catch (GraphException |ListException e ){
-
-            throw new RuntimeException(e);
-
-        }
 
     }
 
     //Metodo para crear los numeros aleatorios
-    private void generateRandomValues(){
+    private void generateRandomGraph(){
         try {
+            Random rand = new Random();
+            graph.clear(); // Limpiamos el grafo anterior
+            textResult.clear(); // Limpiamos el área de texto de resultados
 
-        int Count = 10;
-        for (int i = 0; i < Count; i++) {
+            int numVertices = 10;
+            for (int i = 0; i < numVertices; i++) {
+                Object randomChar;
+                boolean vertexAdded = false;
+                do {
+                    randomChar = util.Utility.RandomAlphabet(); // Asumo que RandomAlphabet genera un char no repetido
+                    try {
+                        graph.addVertex(randomChar);
+                        vertexAdded = true;
+                    } catch (GraphException ge) {
+                        // Si ya existe o el grafo está lleno, intenta de nuevo con otro caracter
+                        System.err.println("Intentando añadir vértice ya existente: " + randomChar + ". Reintentando...");
+                    }
+                } while (!vertexAdded);
+            }
 
-                graph.addVertex(util.Utility.RandomAlphabet()) ;
+            // Conectar aristas con pesos aleatorios
+            int numEdgesToAdd = 15; // Número de aristas a agregar
+            for (int k = 0; k < numEdgesToAdd; k++) {
+                if (graph.size() < 2) break; // Necesitamos al menos 2 vértices para una arista
 
-        }
+                Object v1 = graph.getVertexData(rand.nextInt(graph.size()));
+                Object v2 = graph.getVertexData(rand.nextInt(graph.size()));
 
-        } catch (GraphException |ListException e ){
+                // Asegurar que no sea el mismo vértice y que la arista no exista ya
+                if (!v1.equals(v2) && !graph.containsEdge(v1, v2)) {
+                    int weight = rand.nextInt(50) + 1; // Pesos entre 1 y 50
+                    graph.addEdgeWeight(v1, v2, weight);
+                }
+            }
 
-            throw new RuntimeException(e);
+            textResult.setText("Grafo aleatorio generado con " + graph.size() + " vértices y aristas.");
 
+        } catch (GraphException | ListException e) {
+            showAlert("Error al generar grafo aleatorio", e.getMessage());
         }
     }
 
@@ -184,22 +193,99 @@ public class AdjacencyListGraphController {
 
     @javafx.fxml.FXML
     public void DFSOnAction(ActionEvent actionEvent) {
+
+        try {
+            if (graph.isEmpty()) {
+                textResult.setText("El grafo está vacío, no se puede realizar el DFS.");
+                return;
+            }
+            textResult.setText("DFS Tour: " + graph.dfs());
+        } catch (GraphException | ListException | domain.stack.StackException e) {
+            showAlert("Error en DFS", e.getMessage());
+        }
+
     }
 
     @javafx.fxml.FXML
     public void ContainsVextexOnAction(ActionEvent actionEvent) {
+
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Verificar Vértice");
+        dialog.setHeaderText("Verificar si un vértice existe en el grafo");
+        dialog.setContentText("Ingrese el valor del vértice (una letra):");
+
+        String vertexStr = dialog.showAndWait().orElse(null);
+        if (vertexStr == null || vertexStr.isEmpty()) return;
+
+        Object vertex = vertexStr.charAt(0); // Asumiendo que el vértice es un Character
+
+        try {
+            boolean contains = graph.containsVertex(vertex);
+            if (contains) {
+                textResult.setText("El vértice '" + vertex + "' EXISTE en el grafo.");
+            } else {
+                textResult.setText("El vértice '" + vertex + "' NO EXISTE en el grafo.");
+            }
+        } catch (GraphException | ListException e) {
+            showAlert("Error del Grafo", e.getMessage());
+        }
+
     }
 
     @javafx.fxml.FXML
     public void ToStringOnAction(ActionEvent actionEvent) {
+
+
+            textResult.setText(graph.toString());
+
     }
 
     @javafx.fxml.FXML
     public void BFSOnAction(ActionEvent actionEvent) {
+
+        try {
+            if (graph.isEmpty()) {
+                textResult.setText("El grafo está vacío, no se puede realizar el BFS.");
+                return;
+            }
+            textResult.setText("BFS Tour: " + graph.bfs());
+        } catch (GraphException | ListException | domain.queue.QueueException e) {
+            showAlert("Error en BFS", e.getMessage());
+        }
+
     }
 
     @javafx.fxml.FXML
     public void containsEdgeOnAction(ActionEvent actionEvent) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Verificar Arista");
+        dialog.setHeaderText("Verificar si existe una arista entre dos vértices");
+        dialog.setContentText("Ingrese el primer vértice (una letra):");
+
+        String v1Str = dialog.showAndWait().orElse(null);
+        if (v1Str == null || v1Str.isEmpty()) return;
+
+        dialog.setContentText("Ingrese el segundo vértice (una letra):");
+        String v2Str = dialog.showAndWait().orElse(null);
+        if (v2Str == null || v2Str.isEmpty()) return;
+
+        try {
+            Object v1 = v1Str.charAt(0); // Asumiendo que los vértices son Character
+            Object v2 = v2Str.charAt(0);
+
+            boolean contains = graph.containsEdge(v1, v2);
+            String result = "La arista entre '" + v1 + "' y '" + v2 + "' ";
+            if (contains) {
+                Object weight = graph.getEdgeWeight(v1, v2); // Obtener el peso
+                result += "EXISTE. Peso: " + weight;
+            } else {
+                result += "NO EXISTE.";
+            }
+            textResult.setText(result);
+
+        } catch (GraphException | ListException e) {
+            showAlert("Error del Grafo", e.getMessage());
+        }
     }
 
 
@@ -213,5 +299,14 @@ public class AdjacencyListGraphController {
 
     @FXML
     public void randomizeOnAction(ActionEvent actionEvent) {
+
+        try {
+            generateRandomGraph(); // Generar un nuevo grafo aleatorio
+            drawGraph(); // Redibujar el grafo
+            textResult.setText("Nuevo grafo aleatorio generado y dibujado.");
+        } catch (Exception e) {
+            showAlert("Error al Aleatorizar", e.getMessage());
+        }
+
     }
 }

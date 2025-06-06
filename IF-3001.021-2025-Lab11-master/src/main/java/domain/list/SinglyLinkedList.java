@@ -240,4 +240,9 @@ public class SinglyLinkedList implements List{
         }
         return result;
     }
+
+
+    public Object get(int i) {
+        return i ;
+    }
 }

@@ -1,6 +1,7 @@
 package domain;
 
 import domain.list.ListException;
+import domain.list.SinglyLinkedList;
 import domain.queue.LinkedQueue;
 import domain.queue.QueueException;
 import domain.stack.LinkedStack;
@@ -8,7 +9,7 @@ import domain.stack.StackException;
 
 public class AdjacencyListGraph implements Graph {
 
-    private Vertex[] vertexList; //arreglo de objetos tupo vértice
+    public Vertex[] vertexList; //arreglo de objetos tupo vértice
     private int n; //max de elementos
     private int counter; //contador de vertices
 
@@ -239,6 +240,23 @@ public class AdjacencyListGraph implements Graph {
             throw new GraphException("Invalid vertex index.");
         }
         return vertexList[index].data;
+    }
+
+
+    public Object getEdgeWeight(Object a, Object b) throws GraphException, ListException {
+        if(!containsVertex(a) || !containsVertex(b))
+            throw new GraphException("One or both vertexes ["+a+"] and ["+b+"] do not exist to get edge weight.");
+
+        int indexA = indexOf(a);
+        SinglyLinkedList edges = vertexList[indexA].edgesList;
+        for (int i = 0; i < edges.size(); i++) {
+            EdgeWeight currentEdge = (EdgeWeight) edges.get(i);
+            if (util.Utility.compare(currentEdge.getEdge(), b) == 0) {
+                return currentEdge.getWeight();
+            }
+        }
+        // Si llegamos aquí, la arista no existe (aunque containsEdge debería haberlo atrapado)
+        throw new GraphException("No edge exists between [" + a + "] and [" + b + "]");
     }
 
 

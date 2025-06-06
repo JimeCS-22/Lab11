@@ -245,4 +245,22 @@ public class AdjacencyMatrixGraph implements Graph {
         return result;
     }
 
+
+    public Object getEdgeWeight(Object a, Object b) throws GraphException, ListException {
+        if(!containsEdge(a, b))
+            throw new GraphException("There is no edge between the vertexes[" + a + "] and [" + b + "].");
+        int indexA = indexOf(a);
+        int indexB = indexOf(b);
+        return adjacencyMatrix[indexA][indexB];
+    }
+
+    public Object getVertexData(int index) throws ListException {
+        if (index < 0 || index >= counter) {
+            throw new ListException("Vertex index out of bounds.");
+        }
+        return vertexList[index].data;
+    }
+
+
+
 }
