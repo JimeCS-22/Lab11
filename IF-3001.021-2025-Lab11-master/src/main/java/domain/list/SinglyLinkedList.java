@@ -125,7 +125,7 @@ public class SinglyLinkedList implements List{
         if(isEmpty()){
             throw new ListException("Singly Linked List is Empty");
         }
-        for (int i = 1; i <= size() ; i++) {
+        for (int i = 0; i <= size() ; i++) {
             for (int j = i+1; j <= size() ; j++) {
                 if(util.Utility.compare(getNode(j).data, getNode(i).data)<0){
                     Object aux = getNode(i).data;
@@ -142,7 +142,7 @@ public class SinglyLinkedList implements List{
             throw new ListException("Singly Linked List is Empty");
         }
         Node aux = first;
-        int index=1; //la lista inicia en 1
+        int index=0; //la lista inicia en 1
         while(aux!=null){
             if(util.Utility.compare(aux.data, element)==0){
                 return index;
@@ -204,8 +204,11 @@ public class SinglyLinkedList implements List{
         if(isEmpty()){
             throw new ListException("Singly Linked List is Empty");
         }
+        if (index < 0 || index >= size()) { // Validamos que el índice esté entre 0 y size()-1
+            throw new ListException("Invalid index: " + index);
+        }
         Node aux = first;
-        int i = 1; // pos del primer nodo
+        int i = 0; // pos del primer nodo
         while(aux!=null){
             if(util.Utility.compare(i, index)==0) {  //ya encontro el indice
                 return aux;
@@ -242,7 +245,23 @@ public class SinglyLinkedList implements List{
     }
 
 
-    public Object get(int i) {
-        return i ;
+    public Object get(int index) throws ListException {
+        if(isEmpty()){
+            throw new ListException("Singly Linked List is Empty");
+        }
+        if (index < 0 || index > size()) { // <<-- AQUI DEBE SER index < 0 || index >= size()
+            throw new ListException("Invalid index: " + index);
+        }
+
+        Node aux = first;
+        int i = 0;
+        while(aux != null){
+            if(util.Utility.compare(i, index) == 0) {
+                return aux.data;
+            }
+            i++;
+            aux = aux.next;
+        }
+        return null;
     }
 }

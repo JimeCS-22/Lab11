@@ -24,8 +24,6 @@ public class AdjancencyMatrixGraphController {
     @javafx.fxml.FXML
     private Pane pane2;
     @javafx.fxml.FXML
-    private Label balanceLabel;
-    @javafx.fxml.FXML
     private AnchorPane AP;
     @javafx.fxml.FXML
     private Pane pane3;
@@ -51,27 +49,31 @@ public class AdjancencyMatrixGraphController {
 
     //Metodo para crear los numeros aleatorios
     private void generateRandomGraph(){
-
         try {
             graph.clear(); // Limpiamos el grafo actual antes de generar uno nuevo
 
             Random rand = new Random();
             int numVerticesToGenerate = 10;
+            int verticesAddedCount = 0; // Para controlar cuántos vértices únicos hemos añadido
 
-            for (int i = 0; i < numVerticesToGenerate; i++) {
-                int randomVertexValue;
-                boolean vertexAdded = false;
-                do {
-                    randomVertexValue = util.Utility.random(99);
-                    try {
-                        graph.addVertex(randomVertexValue); // Intentamos agregar el vértice
-                        vertexAdded = true; // Si no lanza excepción, se agregó
-                    } catch (GraphException ge) {
-
-                    }
-                } while (!vertexAdded);
-
+            // Bucle para añadir vértices únicos
+            while (verticesAddedCount < numVerticesToGenerate && graph.size() < graph.vertexList.length) { // Añadimos hasta 'numVerticesToGenerate' o hasta que el grafo esté lleno
+                int randomVertexValue = util.Utility.random(99);
+                try {
+                    graph.addVertex(randomVertexValue); // Intentamos agregar el vértice
+                    verticesAddedCount++; // Solo incrementamos si se agregó exitosamente
+                } catch (GraphException ge) {
+                    // Si la excepción es porque el vértice ya existe, simplemente lo ignoramos
+                    // y el bucle while intentará con otro número aleatorio.
+                    // Si la excepción es "Graph is Full", el bucle while se detendrá.
+                }
             }
+
+            // Si no se pudieron añadir todos los vértices deseados
+            if (verticesAddedCount < numVerticesToGenerate) {
+                System.err.println("Advertencia: No se pudieron añadir " + numVerticesToGenerate + " vértices únicos. Se añadieron " + verticesAddedCount + " vértices.");
+            }
+
 
             int numEdgesToAdd = 15;
             for (int k = 0; k < numEdgesToAdd; k++) {
@@ -92,6 +94,7 @@ public class AdjancencyMatrixGraphController {
             showAlert("Error de generación", "Ocurrió un error al generar el grafo aleatorio: " + e.getMessage());
         }
     }
+
 
 
     private void drawGraph() {
@@ -183,7 +186,19 @@ public class AdjancencyMatrixGraphController {
                 // y si es un grafo no dirigido, dibuja solo para i < j
                 if (i < j && graph.containsEdge(node1Data, node2Data)) {
                     Line line = new Line(node1Pos.x, node1Pos.y, node2Pos.x, node2Pos.y);
-                    line.setStroke(Color.BLACK);
+                    line.setStroke(Color.BLACK); // Color inicial de la línea
+                    line.setStrokeWidth(2); // Grosor inicial de la línea
+
+                    // *** Añadir los manejadores de eventos ***
+                    line.setOnMouseEntered(event -> {
+                        line.setStroke(Color.RED); // Se pone roja al pasar el mouse
+                        line.setStrokeWidth(3); // Un poco más gruesa para destacar
+                    });
+
+                    line.setOnMouseExited(event -> {
+                        line.setStroke(Color.LIMEGREEN); // Se pone verde al salir el mouse
+                        line.setStrokeWidth(2); // Vuelve a su grosor original
+                    });
 
                     targetPane.getChildren().add(line);
                     line.toBack();
@@ -196,7 +211,7 @@ public class AdjancencyMatrixGraphController {
                             double midY = (node1Pos.y + node2Pos.y) / 2;
 
                             Text weightText = new Text(midX + 5, midY - 5, String.valueOf(weight));
-                            weightText.setFill(Color.BLUE);
+                            weightText.setFill(Color.BLACK);
                             weightText.setFont(new Font(10));
                             targetPane.getChildren().add(weightText);
                         }
@@ -208,7 +223,6 @@ public class AdjancencyMatrixGraphController {
             }
         }
     }
-
 
 
 

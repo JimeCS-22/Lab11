@@ -213,15 +213,20 @@ public class AdjacencyListGraph implements Graph {
     }
 
     private int adjacentVertexNotVisited(int index) throws ListException {
-        Object vertexData = vertexList[index].data;
-        for (int i = 0; i < counter; i++) {
-            if(!vertexList[index].edgesList.isEmpty()
-                    && vertexList[i].edgesList.contains(new EdgeWeight(vertexData, null))
-                    && !vertexList[i].isVisited())
-                return i;//retorna la posicion del vertice adyacente no visitado
-        }//for i
+        SinglyLinkedList edges = vertexList[index].edgesList;
+
+        for (int i = 0; i < edges.size(); i++) {
+            EdgeWeight edge = (EdgeWeight) edges.get(i);
+            Object adjacentData = edge.getEdge();
+
+            int adjacentIndex = indexOf(adjacentData);
+            if (!vertexList[adjacentIndex].isVisited()) {
+                return adjacentIndex;
+            }
+        }
         return -1;
     }
+
 
     @Override
     public String toString() {

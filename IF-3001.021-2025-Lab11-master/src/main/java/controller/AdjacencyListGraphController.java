@@ -25,8 +25,6 @@ public class AdjacencyListGraphController {
     @javafx.fxml.FXML
     private Pane pane2;
     @javafx.fxml.FXML
-    private Label balanceLabel;
-    @javafx.fxml.FXML
     private AnchorPane AP;
     private AdjacencyListGraph graph;
     private Map<Object, Circle> nodeCircles = new HashMap<>();
@@ -48,40 +46,47 @@ public class AdjacencyListGraphController {
 
     }
 
-    //Metodo para crear los numeros aleatorios
+    //Metodo para crear las letras aleatorias
     private void generateRandomGraph(){
+
         try {
             Random rand = new Random();
-            graph.clear(); // Limpiamos el grafo anterior
-            textResult.clear(); // Limpiamos el área de texto de resultados
+            graph.clear();
+            textResult.clear();
 
-            int numVertices = 10;
-            for (int i = 0; i < numVertices; i++) {
-                Object randomChar;
-                boolean vertexAdded = false;
-                do {
-                    randomChar = util.Utility.RandomAlphabet(); // Asumo que RandomAlphabet genera un char no repetido
-                    try {
-                        graph.addVertex(randomChar);
-                        vertexAdded = true;
-                    } catch (GraphException ge) {
-                        // Si ya existe o el grafo está lleno, intenta de nuevo con otro caracter
-                        System.err.println("Intentando añadir vértice ya existente: " + randomChar + ". Reintentando...");
-                    }
-                } while (!vertexAdded);
+            int numVerticesToGenerate = 10;
+            Set<Character> usedCharacters = new HashSet<>();
+            List<Character> availableCharacters = new ArrayList<>();
+            for (char c = 'A'; c <= 'Z'; c++) {
+                availableCharacters.add(c);
+            }
+            Collections.shuffle(availableCharacters); // Mezclar una vez para obtener un orden aleatorio
+
+            int currentVertexCount = 0;
+            for (Character c : availableCharacters) {
+                if (currentVertexCount >= numVerticesToGenerate) {
+                    break;
+                }
+
+                try {
+                    graph.addVertex(c);
+                    usedCharacters.add(c);
+                    currentVertexCount++;
+                } catch (GraphException ge) {
+                    System.err.println("Error al añadir vértice: " + ge.getMessage());
+                }
             }
 
             // Conectar aristas con pesos aleatorios
-            int numEdgesToAdd = 15; // Número de aristas a agregar
+            int numEdgesToAdd = 15;
             for (int k = 0; k < numEdgesToAdd; k++) {
-                if (graph.size() < 2) break; // Necesitamos al menos 2 vértices para una arista
+                if (graph.size() < 2) break;
 
                 Object v1 = graph.getVertexData(rand.nextInt(graph.size()));
                 Object v2 = graph.getVertexData(rand.nextInt(graph.size()));
 
-                // Asegurar que no sea el mismo vértice y que la arista no exista ya
                 if (!v1.equals(v2) && !graph.containsEdge(v1, v2)) {
-                    int weight = rand.nextInt(50) + 1; // Pesos entre 1 y 50
+                    int weight = rand.nextInt(50) + 1;
                     graph.addEdgeWeight(v1, v2, weight);
                 }
             }
@@ -91,6 +96,7 @@ public class AdjacencyListGraphController {
         } catch (GraphException | ListException e) {
             showAlert("Error al generar grafo aleatorio", e.getMessage());
         }
+
     }
 
     private void drawGraph() {
@@ -176,6 +182,18 @@ public class AdjacencyListGraphController {
                 if (i < j && graph.containsEdge(node1Data, node2Data)) { // Solo dibuja una vez por par y verifica si existe la arista
                     Line line = new Line(node1Pos.x, node1Pos.y, node2Pos.x, node2Pos.y);
                     line.setStroke(Color.BLACK); // Color de línea por defecto
+                    line.setStrokeWidth(2); // Un poco más gruesa para que sea más fácil interactuar
+
+                    // *** Añadir los manejadores de eventos ***
+                    line.setOnMouseEntered(event -> {
+                        line.setStroke(Color.RED); // Se pone roja al pasar el mouse
+                        line.setStrokeWidth(3); // Hacerla un poco más gruesa cuando está seleccionada
+                    });
+
+                    line.setOnMouseExited(event -> {
+                        line.setStroke(Color.LIMEGREEN); // ¡Ahora se pone verde al salir el mouse!
+                        line.setStrokeWidth(2); // Vuelve a su grosor original
+                    });
 
                     targetPane.getChildren().add(line);
                     line.toBack();
@@ -183,9 +201,6 @@ public class AdjacencyListGraphController {
             }
         }
     }
-
-
-
 
     @javafx.fxml.FXML
     public void handleScrollZoom(Event event) {
