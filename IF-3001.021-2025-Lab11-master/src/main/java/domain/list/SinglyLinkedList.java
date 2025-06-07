@@ -11,8 +11,6 @@ public class SinglyLinkedList implements List{
 
     @Override
     public int size() throws ListException {
-        // Mejor que size() no lance excepción si está vacía, simplemente retorna 0.
-        // Las excepciones se reservan para situaciones verdaderamente excepcionales.
         return this.size; // Retornar el tamaño mantenido
     }
 
@@ -33,7 +31,8 @@ public class SinglyLinkedList implements List{
 
         Node aux = first;
         while(aux!=null){
-            if(util.Utility.compare(aux.data, element)==0){
+            // USAR .equals() AQUI
+            if(aux.data.equals(element)){ // <-- CORREGIDO: Usar .equals()
                 return true;
             }
             aux = aux.next;
@@ -84,7 +83,8 @@ public class SinglyLinkedList implements List{
             throw new ListException("Singly Linked List is Empty");
         }
         // Caso 1: El elemento a suprimir está al inicio
-        if(util.Utility.compare(first.data, element)==0){
+        // USAR .equals() AQUI
+        if(first.data.equals(element)){ // <-- CORREGIDO: Usar .equals()
             first = first.next;
             size--; // Decrementar tamaño al eliminar
             return; // Salir de la función después de eliminar
@@ -93,13 +93,15 @@ public class SinglyLinkedList implements List{
         // Caso 2: El elemento a suprimir puede estar al medio o final
         Node prev = first;
         Node aux = first.next;
-        while(aux!=null && util.Utility.compare(aux.data, element)!=0){
+        // USAR .equals() AQUI
+        while(aux!=null && !aux.data.equals(element)){ // <-- CORREGIDO: Usar .equals()
             prev = aux;
             aux = aux.next;
         }
         // Se sale cuando alcanza nulo (elemento no encontrado)
         // o cuando encuentra el elemento
-        if(aux!=null && util.Utility.compare(aux.data, element)==0){
+        // USAR .equals() AQUI
+        if(aux!=null && aux.data.equals(element)){ // <-- CORREGIDO: Usar .equals()
             // Ya lo encontró, procedo a desenlazar el nodo
             prev.next = aux.next;
             size--; // Decrementar tamaño al eliminar
@@ -146,8 +148,10 @@ public class SinglyLinkedList implements List{
         if(isEmpty()){
             throw new ListException("Singly Linked List is Empty");
         }
-        // Para ordenar, es mejor usar los datos y no los nodos directamente si los nodos son privados.
-        // Aquí se mantiene la implementación existente que usa getNode(index).data
+        // Aquí puedes seguir usando util.Utility.compare si está diseñado para ordenar,
+        // pero asegúrate de que maneje tus objetos Vertex/EdgeWeight correctamente
+        // si se usan para ordenar la lista de vértices.
+        // Si no, también deberías considerar una forma de ordenar que use compareTo si tus objetos son Comparable.
         for (int i = 1; i <= size() ; i++) {
             for (int j = i+1; j <= size() ; j++) {
                 if(util.Utility.compare(getNode(j).data, getNode(i).data)<0){
@@ -167,7 +171,8 @@ public class SinglyLinkedList implements List{
         Node aux = first;
         int index=1; // Índice base 1
         while(aux!=null){
-            if(util.Utility.compare(aux.data, element)==0){
+            // USAR .equals() AQUI
+            if(aux.data.equals(element)){ // <-- CORREGIDO: Usar .equals()
                 return index;
             }
             index++;
@@ -210,12 +215,14 @@ public class SinglyLinkedList implements List{
         if(isEmpty()){
             throw new ListException("Singly Linked List is Empty");
         }
-        if(util.Utility.compare(first.data, element)==0){
+        // USAR .equals() AQUI
+        if(first.data.equals(element)){ // <-- CORREGIDO: Usar .equals()
             return "It's the first, it has no previous"; // Mejor retornar null o lanzar excepción específica
         }
         Node aux = first;
         while(aux.next!=null){
-            if(util.Utility.compare(aux.next.data, element)==0){
+            // USAR .equals() AQUI
+            if(aux.next.data.equals(element)){ // <-- CORREGIDO: Usar .equals()
                 return aux.data;
             }
             aux=aux.next;
@@ -230,7 +237,8 @@ public class SinglyLinkedList implements List{
         }
         Node aux = first;
         while(aux!=null){
-            if(util.Utility.compare(aux.data, element)==0){
+            // USAR .equals() AQUI
+            if(aux.data.equals(element)){ // <-- CORREGIDO: Usar .equals()
                 if(aux.next != null){
                     return aux.next.data;
                 } else {
@@ -253,7 +261,7 @@ public class SinglyLinkedList implements List{
         Node aux = first;
         int i = 1;
         while(aux!=null){
-            if(util.Utility.compare(i, index)==0) {
+            if(i == index) { // Aquí la comparación es numérica, no de objetos, util.Utility.compare podría estar bien si es para ints.
                 return aux;
             }
             i++;
@@ -269,7 +277,8 @@ public class SinglyLinkedList implements List{
         }
         Node aux = first;
         while(aux!=null){
-            if(util.Utility.compare(aux.data, element)==0) {
+            // USAR .equals() AQUI
+            if(aux.data.equals(element)) { // <-- CORREGIDO: Usar .equals()
                 return aux;
             }
             aux = aux.next;
@@ -288,7 +297,7 @@ public class SinglyLinkedList implements List{
         return result;
     }
 
-     // Ya lo tenías, lo mantengo.
+    // Ya lo tenías, lo mantengo.
     public Object get(int index) throws ListException {
         if(isEmpty()){
             throw new ListException("Singly Linked List is Empty");
@@ -300,7 +309,7 @@ public class SinglyLinkedList implements List{
         Node aux = first;
         int i = 1;
         while(aux != null){
-            if(util.Utility.compare(i, index) == 0) {
+            if(i == index) { // Aquí la comparación es numérica, no de objetos.
                 return aux.data;
             }
             i++;
