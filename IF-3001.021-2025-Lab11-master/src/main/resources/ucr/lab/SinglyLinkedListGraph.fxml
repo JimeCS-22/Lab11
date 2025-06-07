@@ -11,13 +11,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="AP" prefHeight="730.0" prefWidth="790.0" style="-fx-background-color: linear-gradient(from 0.0% 0.0% to 100.0% 100.0%, #384463 0.0%, #343336 100.0%);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SinglyLinkedListGraph">
+<AnchorPane fx:id="AP" prefHeight="730.0" prefWidth="790.0" style="-fx-background-color: linear-gradient(from 0.0% 0.0% to 100.0% 100.0%, #384463 0.0%, #343336 100.0%);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SinglyLinkedListGraphController">
     <children>
         <Pane fx:id="mainPain" prefHeight="730.0" prefWidth="790.0">
             <children>
                 <Pane prefHeight="83.0" prefWidth="790.0" style="-fx-background-color: #536dde;">
                     <children>
-                        <Text layoutX="48.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Singly Linked List Graph " textAlignment="CENTER" wrappingWidth="642.94921875">
+                        <Text layoutX="48.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Singly Linked List Graph" textAlignment="CENTER" wrappingWidth="642.94921875">
                             <font>
                                 <Font name="Serif Regular" size="47.0" />
                             </font>
@@ -36,49 +36,53 @@
                                         </Stop>
                                     </stops>
                                 </LinearGradient>
-
                             </fill>
                         </Text>
                     </children>
                 </Pane>
+
                 <Button layoutX="14.0" layoutY="90.0" mnemonicParsing="false" onAction="#randomizeOnAction" prefHeight="37.0" prefWidth="110.0" style="-fx-background-radius: 15; -fx-background-color: #9b9b9b;" text="Randomize">
                     <font>
                         <Font name="Arial" size="14.0" />
                     </font>
                 </Button>
-                <Button layoutX="14.0" layoutY="147.0" mnemonicParsing="false" onAction="#containsOnAction" prefHeight="37.0" prefWidth="110.0" style="-fx-background-radius: 15; -fx-background-color: #9b9b9b;" text="Contains">
+                <Button layoutX="186.0" layoutY="90.0" mnemonicParsing="false" onAction="#containsVertexOnAction" prefHeight="37.0" prefWidth="142.0" style="-fx-background-radius: 15; -fx-background-color: #9b9b9b;" text="Contains Vertex">
                     <font>
                         <Font name="Arial" size="14.0" />
                     </font>
                 </Button>
-                <Button layoutX="137.0" layoutY="90.0" mnemonicParsing="false" onAction="#addOnAction" prefHeight="37.0" prefWidth="110.0" style="-fx-background-radius: 15; -fx-background-color: #9b9b9b;" text="Add">
+                <Button layoutX="198.0" layoutY="148.0" mnemonicParsing="false" onAction="#toStringOnAction" prefHeight="37.0" prefWidth="117.0" style="-fx-background-radius: 15; -fx-background-color: #9b9b9b;" text="To String">
                     <font>
                         <Font name="Arial" size="14.0" />
                     </font>
                 </Button>
-                <Button layoutX="137.0" layoutY="147.0" mnemonicParsing="false" onAction="#removeOnAction" prefHeight="37.0" prefWidth="110.0" style="-fx-background-radius: 15; -fx-background-color: #9b9b9b;" text="Remove">
+                <Button layoutX="14.0" layoutY="148.0" mnemonicParsing="false" onAction="#containsEdgeOnAction" prefHeight="37.0" prefWidth="159.0" style="-fx-background-radius: 15; -fx-background-color: #9b9b9b;" text="Contains Edge">
                     <font>
                         <Font name="Arial" size="14.0" />
                     </font>
                 </Button>
-                <Button layoutX="254.0" layoutY="90.0" mnemonicParsing="false" onAction="#nodeHeightOnAction" prefHeight="37.0" prefWidth="117.0" style="-fx-background-radius: 15; -fx-background-color: #9b9b9b;" text="Node Height">
+                <Button layoutX="363.0" layoutY="90.0" mnemonicParsing="false" onAction="#dfsOnAction" prefHeight="37.0" prefWidth="126.0" style="-fx-background-radius: 15; -fx-background-color: #9b9b9b;" text="DFS Tour">
                     <font>
                         <Font name="Arial" size="14.0" />
                     </font>
                 </Button>
-                <Button layoutX="257.0" layoutY="147.0" mnemonicParsing="false" onAction="#treeHeightOnAction" prefHeight="37.0" prefWidth="110.0" style="-fx-background-radius: 15; -fx-background-color: #9b9b9b;" text="Tree Height">
+                <Button layoutX="357.0" layoutY="148.0" mnemonicParsing="false" onAction="#bfsOnAction" prefHeight="37.0" prefWidth="126.0" style="-fx-background-radius: 15; -fx-background-color: #9b9b9b;" text="BFS Tour">
                     <font>
                         <Font name="Arial" size="14.0" />
                     </font>
                 </Button>
-                <Pane fx:id="pane2" layoutY="191.0" onScroll="#handleScrollZoom" prefHeight="539.0" prefWidth="790.0" style="-fx-background-color: #4053A9;">
-               <children>
-                  <Pane fx:id="pane3" layoutX="375.0" layoutY="46.0" prefHeight="470.0" prefWidth="382.0" />
-                  <TextArea fx:id="texResult" layoutX="25.0" layoutY="27.0" prefHeight="482.0" prefWidth="308.0" />
-               </children></Pane>
-                <Label fx:id="balanceLabel" layoutX="392.0" layoutY="148.0" prefHeight="36.0" prefWidth="235.0" text="Balance: Unknown" textFill="#e50000">
+
+                <Pane fx:id="pane2" layoutY="226.0" onScroll="#handleScrollZoom" prefHeight="504.0" prefWidth="790.0" style="-fx-background-color: #4053A9;">
+                    <children>
+                        <Pane fx:id="pane3" layoutX="319.0" layoutY="32.0" prefHeight="477.0" prefWidth="431.0" style="-fx-background-color: #384463; -fx-border-color: #536dde; -fx-border-width: 2;">
+                        </Pane>
+                        <TextArea fx:id="texResult" layoutX="40.0" layoutY="43.0" prefHeight="454.0" prefWidth="272.0" wrapText="true" />
+                    </children>
+                </Pane>
+
+                      <Label fx:id="edgeInfoLabel" layoutX="42.0" layoutY="196.0" prefHeight="30.0" prefWidth="573.0" text="Click an edge to see info" textFill="RED">
                     <font>
-                        <Font size="25.0" />
+                        <Font name="Arial Bold" size="14.0" />
                     </font>
                 </Label>
             </children>
