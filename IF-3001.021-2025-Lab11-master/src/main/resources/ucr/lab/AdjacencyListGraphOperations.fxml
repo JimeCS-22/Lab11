@@ -73,13 +73,13 @@
                 </Button>
                 <Pane fx:id="pane2" layoutY="191.0" prefHeight="539.0" prefWidth="790.0" style="-fx-background-color: #4053A9;">
                <children>
-                  <Pane fx:id="pane3" layoutX="371.0" layoutY="32.0" onScroll="#handleScrollZoomForPane3" prefHeight="468.0" prefWidth="395.0" />
+                  <Pane fx:id="pane3" layoutX="348.0" layoutY="32.0" onScroll="#handleScrollZoomForPane3" prefHeight="468.0" prefWidth="418.0" />
                   <TextArea fx:id="textResult" layoutX="36.0" layoutY="39.0" prefHeight="468.0" prefWidth="277.0" />
-                      <Label fx:id="txtLabel" layoutX="327.0" layoutY="5.0" prefHeight="36.0" prefWidth="418.0" text="Edge between the vertexes:  ......  . Weight: " textFill="#e50000">
-                          <font>
-                              <Font size="20.0" />
-                          </font>
-                      </Label>
+                  <Label fx:id="txtLabel" layoutX="348.0" layoutY="4.0" prefHeight="20.0" prefWidth="406.0" textFill="RED">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
                </children></Pane>
             </children>
         </Pane>

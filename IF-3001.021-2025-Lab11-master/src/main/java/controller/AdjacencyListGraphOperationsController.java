@@ -68,7 +68,7 @@ public class AdjacencyListGraphOperationsController {
             for (char c = 'A'; c <= 'Z'; c++) {
                 availableCharacters.add(c);
             }
-            Collections.shuffle(availableCharacters); // Mezclar una vez para obtener un orden aleatorio
+            Collections.shuffle(availableCharacters);
 
             int currentVertexCount = 0;
             for (Character c : availableCharacters) {
@@ -187,20 +187,29 @@ public class AdjacencyListGraphOperationsController {
                 NodePosition node2Pos = positions.get(j);
                 Object node2Data = node2Pos.value;
 
-                if (i < j && graph.containsEdge(node1Data, node2Data)) { // Solo dibuja una vez por par y verifica si existe la arista
+                if (i < j && graph.containsEdge(node1Data, node2Data)) {
                     Line line = new Line(node1Pos.x, node1Pos.y, node2Pos.x, node2Pos.y);
-                    line.setStroke(Color.BLACK); // Color de línea por defecto
-                    line.setStrokeWidth(2); // Un poco más gruesa para que sea más fácil interactuar
+                    line.setStroke(Color.BLACK);
+                    line.setStrokeWidth(2);
 
                     // *** Añadir los manejadores de eventos ***
                     line.setOnMouseEntered(event -> {
-                        line.setStroke(Color.RED); // Se pone roja al pasar el mouse
-                        line.setStrokeWidth(3); // Hacerla un poco más gruesa cuando está seleccionada
+                        line.setStroke(Color.RED);
+                        line.setStrokeWidth(3);
+                        try {
+                            Object weight = graph.getEdgeWeight(node1Data, node2Data);
+                            String edgeInfo = String.format("Edge between: %s — %s | Weight: %s",
+                                    node1Data, node2Data, weight);
+                            txtLabel.setText(edgeInfo);
+                        } catch (GraphException | ListException e) {
+                            txtLabel.setText(String.format("Edge between: %s — %s",
+                                    node1Data, node2Data));
+                        }
                     });
 
                     line.setOnMouseExited(event -> {
-                        line.setStroke(Color.LIMEGREEN); // ¡Ahora se pone verde al salir el mouse!
-                        line.setStrokeWidth(2); // Vuelve a su grosor original
+                        line.setStroke(Color.LIMEGREEN);
+                        line.setStrokeWidth(2);
                     });
 
                     targetPane.getChildren().add(line);
@@ -224,9 +233,7 @@ public class AdjacencyListGraphOperationsController {
             graph.addVertex(newVertex);
             drawGraph(); // Redibujar el grafo con el nuevo vértice
             textResult.setText(graph.toString());
-            FXUtility.showAlert("Vértice Añadido",
-                    "Se ha añadido el vértice: " + newVertex,
-                    Alert.AlertType.INFORMATION);
+
         } catch (GraphException e) {
             FXUtility.showAlert("Error al Añadir",
                     e.getMessage(),
@@ -253,9 +260,7 @@ public class AdjacencyListGraphOperationsController {
             graph.removeVertex(vertexToRemove);
             drawGraph(); // Redibujar el grafo sin el vértice eliminado
             textResult.setText(graph.toString());
-            FXUtility.showAlert("Vértice Eliminado",
-                    "Se ha eliminado el vértice: " + vertexToRemove,
-                    Alert.AlertType.INFORMATION);
+
         } catch (GraphException | ListException e) {
             FXUtility.showAlert("Error al Eliminar",
                     e.getMessage(),
@@ -288,6 +293,9 @@ public class AdjacencyListGraphOperationsController {
 
     @FXML
     public void clearOnAction(ActionEvent actionEvent) {
+        textResult.clear();
+        txtLabel.setText("");
+        pane3.getChildren().clear();
         for (Node node : pane3.getChildren()) {
             if (node instanceof Line) {
                 Line line = (Line) node;
@@ -335,7 +343,6 @@ public class AdjacencyListGraphOperationsController {
             drawGraph();
             textResult.setText(graph.toString());
 
-            FXUtility.showAlert("Éxito", "Arista añadida entre " + vertex1 + " y " + vertex2 + " con peso " + weight, Alert.AlertType.INFORMATION);
 
         } catch (GraphException | ListException e) {
             FXUtility.showAlert("Error", "No se pudo añadir la arista: " + e.getMessage(), Alert.AlertType.ERROR);
@@ -394,10 +401,8 @@ public class AdjacencyListGraphOperationsController {
             drawGraph();
             textResult.setText(graph.toString());
 
-            FXUtility.showAlert("Éxito", "Arista eliminada entre " + vertex1 + " y " + vertex2, Alert.AlertType.INFORMATION);
 
-        } catch (GraphException | ListException e) {
-            FXUtility.showAlert("Error", "No se pudo eliminar la arista: " + e.getMessage(), Alert.AlertType.ERROR);
+        } catch (GraphException | ListException _) {
         }
     }
 
