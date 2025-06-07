@@ -61,4 +61,44 @@ public class FXUtility {
             return "YES";
         else return "NO";
     }
+
+    public static void showTextAreaAlert(String title, String headerText, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+
+        TextArea textArea = new TextArea(contentText);
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
+        textArea.setMaxWidth(Double.MAX_VALUE);
+        textArea.setMaxHeight(Double.MAX_VALUE);
+
+        textArea.setStyle("-fx-font-weight: bold;");
+
+        // Añadir el TextArea al DialogPane del Alert
+        alert.getDialogPane().setContent(textArea);
+
+        alert.getDialogPane().setPrefWidth(500);
+        alert.getDialogPane().setPrefHeight(300);
+
+        alert.showAndWait();
+    }
+
+    public static void showMessage(String title, String msg){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(msg);
+        alert.showAndWait();
+    }
+
+    public static Optional<ButtonType> showAlert(String title, String message, Alert.AlertType information) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null); // Sin encabezado
+        alert.setContentText(message);
+        alert.showAndWait();
+        return null;
+    }
+
+
 }

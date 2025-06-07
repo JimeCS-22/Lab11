@@ -41,46 +41,46 @@
                         </Text>
                     </children>
                 </Pane>
-                <Button layoutX="14.0" layoutY="90.0" mnemonicParsing="false" onAction="#randomizeOnAction" prefHeight="37.0" prefWidth="110.0" style="-fx-background-radius: 15; -fx-background-color: #9b9b9b;" text="Randomize">
+                <Button layoutX="73.0" layoutY="90.0" mnemonicParsing="false" onAction="#randomizeOnAction" prefHeight="37.0" prefWidth="139.0" style="-fx-background-radius: 15; -fx-background-color: #9b9b9b;" text="Randomize">
                     <font>
                         <Font name="Arial" size="14.0" />
                     </font>
                 </Button>
-                <Button layoutX="14.0" layoutY="147.0" mnemonicParsing="false" onAction="#containsOnAction" prefHeight="37.0" prefWidth="110.0" style="-fx-background-radius: 15; -fx-background-color: #9b9b9b;" text="Contains">
+                <Button layoutX="540.0" layoutY="90.0" mnemonicParsing="false" onAction="#removeVertexOnAction" prefHeight="37.0" prefWidth="158.0" style="-fx-background-radius: 15; -fx-background-color: #9b9b9b;" text="Remove Vertex">
                     <font>
                         <Font name="Arial" size="14.0" />
                     </font>
                 </Button>
-                <Button layoutX="137.0" layoutY="90.0" mnemonicParsing="false" onAction="#addOnAction" prefHeight="37.0" prefWidth="110.0" style="-fx-background-radius: 15; -fx-background-color: #9b9b9b;" text="Add">
+                <Button layoutX="320.0" layoutY="90.0" mnemonicParsing="false" onAction="#addVertexOnAction" prefHeight="37.0" prefWidth="150.0" style="-fx-background-radius: 15; -fx-background-color: #9b9b9b;" text="Add Vertex">
                     <font>
                         <Font name="Arial" size="14.0" />
                     </font>
                 </Button>
-                <Button layoutX="137.0" layoutY="147.0" mnemonicParsing="false" onAction="#removeOnAction" prefHeight="37.0" prefWidth="110.0" style="-fx-background-radius: 15; -fx-background-color: #9b9b9b;" text="Remove">
+                <Button layoutX="280.0" layoutY="147.0" mnemonicParsing="false" onAction="#removeEdgeWeOnAction" prefHeight="37.0" prefWidth="231.0" style="-fx-background-radius: 15; -fx-background-color: #9b9b9b;" text="Remove Edges &amp; Weights">
                     <font>
                         <Font name="Arial" size="14.0" />
                     </font>
                 </Button>
-                <Button layoutX="254.0" layoutY="90.0" mnemonicParsing="false" onAction="#nodeHeightOnAction" prefHeight="37.0" prefWidth="117.0" style="-fx-background-radius: 15; -fx-background-color: #9b9b9b;" text="Node Height">
+                <Button layoutX="27.0" layoutY="147.0" mnemonicParsing="false" onAction="#addEdgeWeOnAction" prefHeight="37.0" prefWidth="231.0" style="-fx-background-radius: 15; -fx-background-color: #9b9b9b;" text="Add Edges &amp; Weights">
                     <font>
                         <Font name="Arial" size="14.0" />
                     </font>
                 </Button>
-                <Button layoutX="257.0" layoutY="147.0" mnemonicParsing="false" onAction="#treeHeightOnAction" prefHeight="37.0" prefWidth="110.0" style="-fx-background-radius: 15; -fx-background-color: #9b9b9b;" text="Tree Height">
+                <Button layoutX="564.0" layoutY="147.0" mnemonicParsing="false" onAction="#clearOnAction" prefHeight="37.0" prefWidth="110.0" style="-fx-background-radius: 15; -fx-background-color: #9b9b9b;" text="Clear">
                     <font>
                         <Font name="Arial" size="14.0" />
                     </font>
                 </Button>
-                <Pane fx:id="pane2" layoutY="191.0" onScroll="#handleScrollZoom" prefHeight="539.0" prefWidth="790.0" style="-fx-background-color: #4053A9;">
+                <Pane fx:id="pane2" layoutY="191.0" prefHeight="539.0" prefWidth="790.0" style="-fx-background-color: #4053A9;">
                <children>
-                  <Pane fx:id="pane3" layoutX="371.0" layoutY="32.0" prefHeight="468.0" prefWidth="395.0" />
-                  <TextArea fx:id="textresult" layoutX="36.0" layoutY="39.0" prefHeight="468.0" prefWidth="277.0" />
+                  <Pane fx:id="pane3" layoutX="371.0" layoutY="32.0" onScroll="#handleScrollZoomForPane3" prefHeight="468.0" prefWidth="395.0" />
+                  <TextArea fx:id="textResult" layoutX="36.0" layoutY="39.0" prefHeight="468.0" prefWidth="277.0" />
+                      <Label fx:id="txtLabel" layoutX="327.0" layoutY="5.0" prefHeight="36.0" prefWidth="418.0" text="Edge between the vertexes:  ......  . Weight: " textFill="#e50000">
+                          <font>
+                              <Font size="20.0" />
+                          </font>
+                      </Label>
                </children></Pane>
-                <Label fx:id="balanceLabel" layoutX="392.0" layoutY="148.0" prefHeight="36.0" prefWidth="235.0" text="Balance: Unknown" textFill="#e50000">
-                    <font>
-                        <Font size="25.0" />
-                    </font>
-                </Label>
             </children>
         </Pane>
     </children>

@@ -230,7 +230,7 @@ public class AdjacencyListGraph implements Graph {
 
     @Override
     public String toString() {
-        String result = "Adjacency List Graph Content...";
+        String result = "Adjacency List Graph Content...\n";
         //se muestran todos los vértices del grafo
         for (int i = 0; i < counter; i++) {
             result+="\nThe vextex in the position: "+i+" is: "+vertexList[i].data;
